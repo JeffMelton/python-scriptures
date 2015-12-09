@@ -1,3 +1,11 @@
+I'll be reworking this for use under Pythonista, Editorial and Workflow in 
+iOS. It works as-is, but lacks some flexibility I desire for my use case.
+
+TODO:
+
+-	parse format "book chapter.verse"
+-	parse format "abbrev_book chapter.verse"
+
 =================
 Python Scriptures
 =================
