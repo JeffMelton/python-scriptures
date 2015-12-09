@@ -63,15 +63,15 @@ def reference_to_string(bookname, chapter, verse=None,
             if v == 1 and ev == book[3][c-1]: # full chapter
                 return '{0} {1}'.format(bn, c)
             elif v == ev: # single verse
-                return '{0} {1}:{2}'.format(bn, c, v)
+                return '{0} {1}.{2}'.format(bn, c, v)
             else: # multiple verses
-                return '{0} {1}:{2}-{3}'.format(
+                return '{0} {1}.{2}-{3}'.format(
                     bn, c, v, ev)
         else: # multiple chapters
             if v == 1 and ev == book[3][ec-1]: # multichapter ref
                 return '{0} {1}-{2}'.format(bn, c, ec)
             else: # multi-chapter, multi-verse ref
-                return '{0} {1}:{2}-{3}:{4}'.format(bn, c, v, ec, ev)
+                return '{0} {1}.{2}-{3}.{4}'.format(bn, c, v, ec, ev)
 
 def normalize_reference(bookname, chapter, verse=None,
                                   end_chapter=None, end_verse=None):

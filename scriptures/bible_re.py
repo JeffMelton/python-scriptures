@@ -93,7 +93,7 @@ scripture_re = re.compile(
      '(?:\s*:\s*(?P<VerseNumber>\d{1,3}))?' \
      '(?:\s*[-\u2013\u2014]\s*' \
      '(?P<EndChapterNumber>\d{1,3}(?=\s*:\s*))?' \
-     '(?:\s*:\s*)?' \
+     '(?:\s*:|.\s*)?' \
      '(?P<EndVerseNumber>\d{1,3})?' \
      ')?' % (book_re_string,), re.IGNORECASE | re.UNICODE)
 
