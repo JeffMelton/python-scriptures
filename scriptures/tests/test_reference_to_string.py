@@ -10,7 +10,7 @@ def f(txt):
     return reference_to_string(
             *normalize_reference(*scripture_re.match(txt).groups()))
 
-class TestReferenceToSting(unittest.TestCase):
+class TestReferenceToString(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -23,8 +23,8 @@ class TestReferenceToSting(unittest.TestCase):
 
         """
         # multi-chapter book
-        self.assertEqual(f('John 1:1'), 'John 1:1')
-        self.assertEqual(f('John 2:3'), 'John 2:3')
+        self.assertEqual(f('John 1:1'), 'John 1.1')
+        self.assertEqual(f('John 2:3'), 'John 2.3')
 
         # single-chapter book
         self.assertEqual(f('Jude 3'), 'Jude 3')
@@ -52,8 +52,8 @@ class TestReferenceToSting(unittest.TestCase):
           book v-ev
         """
         # multi-chapter book
-        self.assertEqual(f('John 1:1-3'), 'John 1:1-3')
-        self.assertEqual(f('John 2:3-5'), 'John 2:3-5')
+        self.assertEqual(f('John 1:1-3'), 'John 1.1-3')
+        self.assertEqual(f('John 2:3-5'), 'John 2.3-5')
 
         # single-chapter book
         self.assertEqual(f('Jude 1:3-5'), 'Jude 3-5')
@@ -67,7 +67,7 @@ class TestReferenceToSting(unittest.TestCase):
           b v-ev
         """
         # multi-chapter book
-        self.assertEqual(f('John 2:3-4:5'), 'John 2:3-4:5')
+        self.assertEqual(f('John 2:3-4:5'), 'John 2.3-4.5')
 
         # single-chapter book
         self.assertEqual(f('Jude 1:3-1:5'), 'Jude 3-5')
@@ -123,8 +123,8 @@ class TestReferenceToSting(unittest.TestCase):
         """
 
         # multi-chapter book
-        self.assertEqual(f('John 2-2:4'), 'John 2:1-4')
-        self.assertEqual(f('John 2-3:3'), 'John 2:1-3:3')
+        self.assertEqual(f('John 2-2:4'), 'John 2.1-4')
+        self.assertEqual(f('John 2-3:3'), 'John 2.1-3.3')
 
         # single-chapter book
         self.assertEqual(f('Jude 1-1:6'), 'Jude 1-6')
