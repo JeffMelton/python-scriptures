@@ -2,10 +2,13 @@ import unittest
 
 from scriptures import normalize_reference, scripture_re
 
+
 def normalize(txt):
     return normalize_reference(*scripture_re.match(txt).groups())
 
+
 class TestNormalization(unittest.TestCase):
+
     def setUp(self):
         pass
 
@@ -80,7 +83,6 @@ class TestNormalization(unittest.TestCase):
         # single-chapter book
         self.assertEqual(normalize('Jude 5'), ('Jude', 1, 5, 1, 5))
 
-
     def test_singlechapter_book_multiverse_ref(self):
         """
         format: book v-ev
@@ -101,8 +103,8 @@ class TestNormalization(unittest.TestCase):
         self.assertEqual(normalize('1 John 1-1:5'), ('I John', 1, 1, 1, 5))
 
         # multi-chapter book
-        self.assertEqual(normalize('I Sam 28-28:2'), ('I Samuel', 28, 1, 28, 2))
-
+        self.assertEqual(normalize('I Sam 28-28:2'),
+                         ('I Samuel', 28, 1, 28, 2))
 
     def test_implied_first_verse_ref_multi_chapter(self):
         """
@@ -114,5 +116,3 @@ class TestNormalization(unittest.TestCase):
         # multi-chapter book
         self.assertEqual(normalize('I Sam 1-2:15'), ('I Samuel', 1, 1, 2, 15))
         self.assertEqual(normalize('I Sam 2-3:5'), ('I Samuel', 2, 1, 3, 5))
-
-

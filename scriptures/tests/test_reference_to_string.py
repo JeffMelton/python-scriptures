@@ -2,15 +2,18 @@ import unittest
 
 from scriptures import normalize_reference, scripture_re, reference_to_string
 
+
 def f(txt):
     """
     accept a string containing a scripture reference, normalize it, and then
     return the reformatted string
     """
     return reference_to_string(
-            *normalize_reference(*scripture_re.match(txt).groups()))
+        *normalize_reference(*scripture_re.match(txt).groups()))
+
 
 class TestReferenceToString(unittest.TestCase):
+
     def setUp(self):
         pass
 
@@ -97,7 +100,6 @@ class TestReferenceToString(unittest.TestCase):
 
         # single-chapter book
         self.assertEqual(f('Jude 5'), 'Jude 5')
-
 
     def test_singlechapter_book_multiverse_ref(self):
         """

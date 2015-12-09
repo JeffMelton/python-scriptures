@@ -2,15 +2,18 @@ import unittest
 
 from scriptures import normalize_reference, scripture_re, reference_to_string
 
+
 def f(txt):
     """
     accept a string containing a scripture reference, normalize it, and then
     return the reformatted string
     """
     return reference_to_string(
-            *normalize_reference(*scripture_re.match(txt).groups()))
+        *normalize_reference(*scripture_re.match(txt).groups()))
+
 
 class TestBookNames(unittest.TestCase):
+
     def setUp(self):
         pass
 
@@ -96,7 +99,6 @@ class TestBookNames(unittest.TestCase):
         self.assertEqual(f('2 chr 1:1'), 'II Chronicles 1.1')
         self.assertEqual(f('2 chro 1:1'), 'II Chronicles 1.1')
         self.assertEqual(f('2 chron 1:1'), 'II Chronicles 1.1')
-
 
     def test_ezra(self):
         self.assertEqual(f('ezra 1:1'), 'Ezra 1.1')
@@ -367,6 +369,6 @@ class TestBookNames(unittest.TestCase):
 
     def test_revelation(self):
         self.assertEqual(f('revelation 1:1'), 'Revelation of Jesus Christ 1.1')
-        self.assertEqual(f('revelation of jesus christ 1:1'), 'Revelation of Jesus Christ 1.1')
+        self.assertEqual(f('revelation of jesus christ 1:1'),
+                         'Revelation of Jesus Christ 1.1')
         self.assertEqual(f('rev 1:1'), 'Revelation of Jesus Christ 1.1')
-
