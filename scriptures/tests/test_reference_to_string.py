@@ -129,4 +129,4 @@ class TestReferenceToString(unittest.TestCase):
         self.assertEqual(f('John 2-3.3'), 'John 2.1-3.3')
 
         # single-chapter book
-        self.assertEqual(f('Jude 1-1:6'), 'Jude 1-6')
+        self.assertEqual(f('Jude 1-1.6'), 'Jude 1-6')
