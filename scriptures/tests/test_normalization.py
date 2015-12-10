@@ -14,14 +14,14 @@ class TestNormalization(unittest.TestCase):
 
     def test_single_reference(self):
         """
-        format: book c:v
+        format: book c.v
         """
         # multi-chapter book
-        self.assertEqual(normalize('John 1:1'), ('John', 1, 1, 1, 1))
-        self.assertEqual(normalize('John 2:3'), ('John', 2, 3, 2, 3))
+        self.assertEqual(normalize('John 1.1'), ('John', 1, 1, 1, 1))
+        self.assertEqual(normalize('John 2.3'), ('John', 2, 3, 2, 3))
 
         # single-chapter book
-        self.assertEqual(normalize('Jude 1:3'), ('Jude', 1, 3, 1, 3))
+        self.assertEqual(normalize('Jude 1.3'), ('Jude', 1, 3, 1, 3))
 
     def test_single_chapter_ref(self):
         """
@@ -39,22 +39,22 @@ class TestNormalization(unittest.TestCase):
 
     def test_multiverse_ref(self):
         """
-        format: book c:v-ev
+        format: book c.v-ev
         """
         # multi-chapter book
-        self.assertEqual(normalize('John 1:1-3'), ('John', 1, 1, 1, 3))
-        self.assertEqual(normalize('John 2:3-5'), ('John', 2, 3, 2, 5))
+        self.assertEqual(normalize('John 1.1-3'), ('John', 1, 1, 1, 3))
+        self.assertEqual(normalize('John 2.3-5'), ('John', 2, 3, 2, 5))
 
         # single-chapter book
-        self.assertEqual(normalize('Jude 1:3-5'), ('Jude', 1, 3, 1, 5))
+        self.assertEqual(normalize('Jude 1.3-5'), ('Jude', 1, 3, 1, 5))
 
     def test_multichapter_multiverse_ref(self):
         """
-        format: book c:v-ec:ev
+        format: book c.v-ec.ev
         """
         # multi-chapter book
-        self.assertEqual(normalize('John 2:2-2:7'), ('John', 2, 2, 2, 7))
-        self.assertEqual(normalize('John 2:3-4:5'), ('John', 2, 3, 4, 5))
+        self.assertEqual(normalize('John 2.2-2.7'), ('John', 2, 2, 2, 7))
+        self.assertEqual(normalize('John 2.3-4.5'), ('John', 2, 3, 4, 5))
 
         # N/A for single-chapter book
 
@@ -97,22 +97,22 @@ class TestNormalization(unittest.TestCase):
 
     def test_implied_first_verse_ref_single_chapter(self):
         """
-        format: book ch-ech:ev
+        format: book ch-ech.ev
         """
         # single-chapter book
-        self.assertEqual(normalize('1 John 1-1:5'), ('I John', 1, 1, 1, 5))
+        self.assertEqual(normalize('1 John 1-1.5'), ('I John', 1, 1, 1, 5))
 
         # multi-chapter book
-        self.assertEqual(normalize('I Sam 28-28:2'),
+        self.assertEqual(normalize('I Sam 28-28.2'),
                          ('I Samuel', 28, 1, 28, 2))
 
     def test_implied_first_verse_ref_multi_chapter(self):
         """
-        format: book ch-ech:ev
+        format: book ch-ech.ev
         """
         # single-chapter book
-        self.assertEqual(normalize('Jude 1-1:5'), ('Jude', 1, 1, 1, 5))
+        self.assertEqual(normalize('Jude 1-1.5'), ('Jude', 1, 1, 1, 5))
 
         # multi-chapter book
-        self.assertEqual(normalize('I Sam 1-2:15'), ('I Samuel', 1, 1, 2, 15))
-        self.assertEqual(normalize('I Sam 2-3:5'), ('I Samuel', 2, 1, 3, 5))
+        self.assertEqual(normalize('I Sam 1-2.15'), ('I Samuel', 1, 1, 2, 15))
+        self.assertEqual(normalize('I Sam 2-3.5'), ('I Samuel', 2, 1, 3, 5))
