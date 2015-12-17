@@ -1,6 +1,6 @@
 import re
 
-from .bible_re import testaments, book_re, scripture_re
+from .bible_re import testaments, scripture_re
 
 
 class InvalidReferenceException(Exception):

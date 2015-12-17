@@ -332,7 +332,7 @@ class TestBookNames(unittest.TestCase):
         self.assertEqual(f('1peter 1:1'), 'I Peter 1.1')
         self.assertEqual(f('1pet 1:1'), 'I Peter 1.1')
 
-    def test_i_peter(self):
+    def test_ii_peter(self):
         self.assertEqual(f('II peter 1:1'), 'II Peter 1.1')
         self.assertEqual(f('II pet 1:1'), 'II Peter 1.1')
         self.assertEqual(f('2 peter 1:1'), 'II Peter 1.1')
