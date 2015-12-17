@@ -120,7 +120,8 @@ def normalize_reference(bookname, chapter, verse=None,
     end_verse = int(end_verse) if end_verse else None
     if not book \
             or (chapter is None or chapter < 1 or chapter > len(book[3])) \
-            or (verse is not None and (verse < 1 or verse > book[3][chapter - 1])) \
+            or (verse is not None and (verse < 1
+                                       or verse > book[3][chapter - 1])) \
             or (end_chapter is not None and (
             end_chapter < 1
             or end_chapter < chapter
