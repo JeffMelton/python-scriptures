@@ -65,7 +65,7 @@ def reference_to_string(bookname, chapter, verse=None,
             return '{0} {1}-{2}'.format(bn, v, ev)
     else:  # multichapter book
         if c == ec:  # same start and end chapters
-            if v == 1 and ev == book[3][c - 1]:  # full chapter
+            if v == 1 and ev == book[3][c]:  # full chapter
                 return '{0} {1}'.format(bn, c)
             elif v == ev:  # single verse
                 return '{0} {1}.{2}'.format(bn, c, v)
@@ -73,7 +73,7 @@ def reference_to_string(bookname, chapter, verse=None,
                 return '{0} {1}.{2}-{3}'.format(
                     bn, c, v, ev)
         else:  # multiple chapters
-            if v == 1 and ev == book[3][ec - 1]:  # multichapter ref
+            if v == 1 and ev == book[3][ec]:  # multichapter ref
                 return '{0} {1}-{2}'.format(bn, c, ec)
             else:  # multi-chapter, multi-verse ref
                 return '{0} {1}.{2}-{3}.{4}'.format(bn, c, v, ec, ev)
@@ -120,22 +120,22 @@ def normalize_reference(bookname, chapter, verse=None,
     end_verse = int(end_verse) if end_verse else None
     if not book \
             or (chapter is None or chapter < 1 or chapter > len(book[3])) \
-            or (verse is not None and (verse < 1 or verse > book[3][chapter - 1])) \
+            or (verse is not None and (verse < 1 or verse > book[3][chapter])) \
             or (end_chapter is not None and (
             end_chapter < 1
             or end_chapter < chapter
             or end_chapter > len(book[3]))) \
             or (end_verse is not None and(
             end_verse < 1
-            or (end_chapter and end_verse > book[3][end_chapter - 1])
+            or (end_chapter and end_verse > book[3][end_chapter])
             or (chapter == end_chapter and end_verse < verse))):
         raise InvalidReferenceException()
 
     if not verse:
-        return (book[0], chapter, 1, chapter, book[3][chapter - 1])
+        return (book[0], chapter, 1, chapter, book[3][chapter])
     if not end_verse:
         if end_chapter and end_chapter != chapter:
-            end_verse = book[3][end_chapter - 1]
+            end_verse = book[3][end_chapter]
         else:
             end_verse = verse
     if not end_chapter:
