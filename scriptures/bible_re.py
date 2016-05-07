@@ -381,7 +381,7 @@ testaments = {
             1: 39, 2: 23, 3: 22, 4: 47, 5: 28, 6: 14, 7: 10, 8: 41, 9: 32, 10: 13
         }
     ],
-       [u'The Wisdom of Solomon', u'Wis', u'(?:The )? Wis(?:dom of Solomon)?', 
+       [u'The Wisdom of Solomon', u'Wis', u'(?:The )?Wis(?:dom of Solomon)?', 
         {
             1: 16, 2: 24, 3: 19, 4: 20, 5: 23, 6: 25, 7: 30, 8: 20, 9: 18, 
             10: 21, 11: 26, 12: 27, 13: 19, 14: 31, 15: 19, 16: 29, 17: 21, 
@@ -409,24 +409,24 @@ testaments = {
             1: 73
         }
     ],
-       [u'I Maccabees', u'1Macc', u'1 Macc(?:abees)?', 
+       [u'I Maccabees', u'1Macc', u'(?:1|I) ?Macc(?:abees)?', 
         {
             1: 64, 2: 70, 3: 60, 4: 61, 5: 68, 6: 63, 7: 50, 8: 32, 9: 73, 
             10: 89, 11: 74, 12: 53, 13: 53, 14: 49, 15: 41, 16: 24
         }
     ],
-       [u'II Maccabees', u'2Macc', u'2 Macc(?:abees)?', 
+       [u'II Maccabees', u'2Macc', u'(?:2|II) ?Macc(?:abees)?', 
         {
             1: 36, 2: 32, 3: 40, 4: 50, 5: 27, 6: 31, 7: 42, 8: 36, 9: 29, 
             10: 38, 11: 38, 12: 45, 13: 26, 14: 46, 15: 39
         }
     ],
-       [u'I Esdras', u'1Esd', u'(?:1|I) Esd(?:ras)?', 
+       [u'I Esdras', u'1Esd', u'(?:1|I) ?Esd(?:ras)?', 
         {
             1: 58, 2: 39, 3: 24, 4: 63, 5: 73, 6: 34, 7: 15, 8: 96, 9: 55
         }
     ],
-       [u'II Esdras', u'2Esd', u'(?:2|II) Esd(?:ras)?', 
+       [u'II Esdras', u'2Esd', u'(?:2|II) ?Esd(?:ras)?', 
         {
             1: 40, 2: 48, 3: 36, 4: 52, 5: 56, 6: 59, 7: 140, 8: 63, 9: 47, 
             10: 59, 11: 46, 12: 51, 13: 58, 14: 48, 15: 63, 16: 78
@@ -442,7 +442,7 @@ testaments = {
       # ['Tobit', 'Tob', 'Tob(?:it)?', [22, 14, 17, 21, 21, 17, 18, 21, 6, 12, 18, 22, 18, 15]],
       # ['Judith', 'Jdt', 'Jud(?:ith)?', [16, 28, 10, 15, 24, 21, 32, 35, 14, 23, 23, 20, 20, 19, 13, 25]],
       # ['Esther (Greek)', 'AddEsth', 'Esther \(Greek\)?', [39, 23, 22, 47, 28, 14, 10, 41, 32, 13]],
-      # ['The Wisdom of Solomon', 'Wis', '(?:The )? Wis(?:dom of Solomon)?', [16, 24, 19, 20, 23, 25, 30, 20, 18, 21, 26, 27, 19, 31, 19, 29, 21, 25, 22]],
+      # ['The Wisdom of Solomon', 'Wis', '(?:The )?Wis(?:dom of Solomon)?', [16, 24, 19, 20, 23, 25, 30, 20, 18, 21, 26, 27, 19, 31, 19, 29, 21, 25, 22]],
       # ['Sirach', 'Sir', 'Sir(?:ach)?', [30, 18, 31, 31, 15, 37, 36, 19, 18, 31, 34, 18, 26, 27, 20, 30, 32, 33, 30, 31, 28, 27, 34, 26, 29, 30, 26, 28, 25, 31, 24, 31, 26, 20, 26, 31, 34, 35, 30, 23, 25, 33, 23, 26, 20, 25, 25, 16, 29, 30]],
       # ['Baruch', 'Bar', 'Bar(?:uch)?', [21, 35, 37, 37, 9]],
       # ['Letter of Jeremiah', 'EpJer', 'Letter of Jeremiah', [73]],
@@ -655,8 +655,7 @@ def get_book_re():
     """
     Get a regular expression string that will match any book of the Bible
     """
-    return '|'.join(b[2] for b in testaments['ot'] + testaments['nt'])
-
+    return '|'.join(b[2] for b in reduce(tuple.__add__, [testaments[testament] for testament in testaments]))
 # assemble the book regex
 book_re_string = get_book_re()
 
@@ -672,4 +671,14 @@ scripture_re = re.compile(
     '(?P<EndChapterNumber>\d{1,3}(?=\s*[:.]\s*))?'
     '(?:\s*[:.]\s*)?'
     '(?P<EndVerseNumber>\d{1,3})?'
-    ')?' % (book_re_string,), re.IGNORECASE | re.UNICODE)
+    ')?' % book_re_string, re.IGNORECASE | re.UNICODE)
+
+scripture_nobook_re = re.compile(
+    r'\b(?P<BookTitle>{}){}\s*'
+    '(?P<ChapterNumber>\d{{1,3}})'
+    '(?:\s*[:.]\s*(?P<VerseNumber>\d{{1,3}}))?'
+    '(?:\s*[-\u2013\u2014]\s*'
+    '(?P<EndChapterNumber>\d{{1,3}}(?=\s*[:.]\s*))?'
+    '(?:\s*[:.]\s*)?'
+    '(?P<EndVerseNumber>\d{{1,3}})?'
+    ')?'.format(book_re_string, '?'), re.IGNORECASE | re.UNICODE)

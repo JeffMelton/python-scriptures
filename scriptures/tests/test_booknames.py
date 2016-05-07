@@ -1,6 +1,7 @@
 import unittest
 
 from scriptures import normalize_reference, scripture_re, reference_to_string
+from scriptures.bible_re import testaments
 
 
 def f(txt):
@@ -8,8 +9,11 @@ def f(txt):
     accept a string containing a scripture reference, normalize it, and then
     return the reformatted string
     """
-    return reference_to_string(
+    #print("parsing {}".format(txt))
+    res = reference_to_string(
         *normalize_reference(*scripture_re.match(txt).groups()))
+    #print("...yielded {}".format(res))
+    return res
 
 
 class TestBookNames(unittest.TestCase):
@@ -196,6 +200,44 @@ class TestBookNames(unittest.TestCase):
     def test_zechariah(self):
         self.assertEqual(f('zechariah 1:1'), 'Zechariah 1.1')
         self.assertEqual(f('zech 1:1'), 'Zechariah 1.1')
+
+
+    def test_deuterocanonical(self):
+        # Don't do these if they've been deleted
+        if 'deut' not in testaments:
+            return
+
+        def checkbook(book, alts, onechap=False):
+            if onechap:
+                def mt(b): return '{} 1'.format(b)
+            else:
+                def mt(b): return '{} 1.1'.format(b)
+
+            #print("trying {} and {}".format(mt(book.lower()), mt(book)))
+            
+            self.assertEqual(f(mt(book.lower())), mt(book))
+            for alt in alts:
+                #print("trying {} and {}".format(alt, book))
+                self.assertEqual(f(mt(alt)), mt(book))
+
+        #self.assertEqual(1+1, 2, "save indent")
+        checkbook('Tobit', ['Tob'])
+        checkbook('Judith', ['Jud']) 
+        # checkbook('Judith', ['Jdt', 'Jud']) 
+        checkbook('Esther', ['Esther'])
+        # checkbook('Esther (Greek)', ['AddEsth', 'Esther'])
+        checkbook('The Wisdom of Solomon', ['Wis'])
+        checkbook('The Wisdom of Solomon', ['The Wis'])
+        checkbook('The Wisdom of Solomon', ['Wisdom of Solomon'])
+        # checkbook('The Wisdom of Solomon', ['Wis', 'The Wis', 'Wisdom of Solomon'])
+        checkbook('Sirach', ['Sir'])
+        checkbook('Baruch', ['Bar'])
+        checkbook('Jeremiah', ['Jeremiah'], onechap=True)
+        checkbook('I Maccabees', ['1Macc', '1 Macc'])
+        checkbook('II Maccabees', ['2Macc', '2 Macc'])
+        checkbook('I Esdras', ['1Esd', '1 Esdras', 'I Esd'])
+        checkbook('II Esdras', ['2Esd', '2 Esdras', 'II Esd'])
+        checkbook('The Prayer of Manasseh', ['Prayer'], onechap=True)
 
     def test_malachi(self):
         self.assertEqual(f('malachi 1:1'), 'Malachi 1.1')
